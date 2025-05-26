@@ -89,6 +89,10 @@ vim.keymap.set("n", "<leader>gv", function()
 	vim.api.nvim_set_current_buf(buf) -- reassign the buffer
 end, { desc = "Turn split into vertical", silent = true })
 
+vim.keymap.set("n", "<leader>e", function()
+	vim.fn.jobstart("wslview .", { detach = true })
+end, { desc = "open windows system file explorer" })
+
 --###############################
 --PLUGINS REMAPS
 --###############################
