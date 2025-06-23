@@ -84,14 +84,18 @@ vim.api.nvim_set_keymap(
 -- turn horizontal split into vertical
 vim.keymap.set("n", "<leader>gv", function()
 	local buf = vim.api.nvim_get_current_buf()
-	vim.cmd("close")               -- close current window
-	vim.cmd("vsplit")              -- open vertical split
+	vim.cmd("close") -- close current window
+	vim.cmd("vsplit") -- open vertical split
 	vim.api.nvim_set_current_buf(buf) -- reassign the buffer
 end, { desc = "Turn split into vertical", silent = true })
 
 vim.keymap.set("n", "<leader>e", function()
 	vim.fn.jobstart("wslview .", { detach = true })
 end, { desc = "open windows system file explorer" })
+
+vim.keymap.set("n", "gm", function()
+	vim.cmd("Man " .. vim.fn.expand("<cword>"))
+end, { desc = "open manpage for word under cursor" })
 
 --###############################
 --PLUGINS REMAPS
@@ -213,25 +217,29 @@ end)
 
 --HARPER_LS
 ------------
-local harper_enabled = true
-function ToggleHarperLS()
-	harper_enabled = not harper_enabled
-	for _, client in ipairs(vim.lsp.get_active_clients()) do
+
+function EnableHarperLS()
+	for _, client in ipairs(vim.lsp.get_clients()) do
+		if client.name ~= "harper_ls" then
+			vim.cmd("LspStart harper_ls")
+			print("Harper LS diagnostics enabled")
+		end
+	end
+end
+
+function DisableHarperLS()
+	for _, client in ipairs(vim.lsp.get_clients()) do
 		if client.name == "harper_ls" then
-			if harper_enabled then
-				vim.lsp.buf_attach_client(0, client.id)
-				print("Harper LS diagnostics enabled")
-			else
-				vim.lsp.buf_detach_client(0, client.id)
-				print("Harper LS diagnostics disabled")
-			end
+			vim.cmd("LspStop harper_ls")
+			print("Harper LS diagnostics disabled")
 		end
 	end
 end
 
 --toggle Harper
-vim.api.nvim_set_keymap("n", "<Leader>h", ":lua ToggleHarperLS()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>eh", ":lua EnableHarperLS()<CR>", { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap("n", "<Leader>dh", ":lua DisableHarperLS()<CR>", { noremap = true, silent = true })
 --GIT
 -------------
 vim.keymap.set("n", "gp", ":Gitsigns preview_hunk<CR>", {})

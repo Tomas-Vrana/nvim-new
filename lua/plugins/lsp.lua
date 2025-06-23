@@ -45,8 +45,14 @@ return {
 							SentenceCapitalization = false,
 							LongSentences = true,
 						},
+						isolateEnglish = true,
 					},
 				},
+				autostart = false,
+				filetypes = { "markdown", "text", "lua", "c", "cpp", "python", "bash", "javascript" },
+			})
+			lspconfig.pyright.setup({
+				capabilities = capabilities,
 			})
 		end,
 	},
@@ -66,6 +72,16 @@ return {
 					--bash
 					null_ls.builtins.formatting.shfmt.with({
 						filetypes = { "sh", "zsh" }, -- Enable formatting for shell scripts
+					}),
+					--python
+					-- null_ls.builtins.diagnostics.ruff.with({
+					-- 	filetypes = { "python" },
+					-- }),
+					null_ls.builtins.formatting.black.with({
+						filetypes = { "python" },
+					}),
+					null_ls.builtins.formatting.prettier.with({
+						filetypes = { "markdown" },
 					}),
 				},
 
