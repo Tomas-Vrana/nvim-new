@@ -244,6 +244,9 @@ vim.api.nvim_set_keymap("n", "<Leader>dh", ":lua DisableHarperLS()<CR>", { norem
 -------------
 vim.keymap.set("n", "gp", ":Gitsigns preview_hunk<CR>", {})
 
+local gitsigns = require("gitsigns")
+vim.keymap.set("n", "<leader>gh", gitsigns.stage_hunk, { desc = "Git stage hunk" })
+
 --open Git Fugitive
 vim.keymap.set("n", "<leader>gf", vim.cmd.Git)
 

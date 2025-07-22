@@ -80,9 +80,9 @@ return {
 					null_ls.builtins.formatting.black.with({
 						filetypes = { "python" },
 					}),
-					null_ls.builtins.formatting.prettier.with({
-						filetypes = { "markdown" },
-					}),
+					-- null_ls.builtins.formatting.prettier.with({
+					-- 	filetypes = { "markdown" },
+					-- }),
 				},
 
 				-- format on save
